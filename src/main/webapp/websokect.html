@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Example</title>
+</head>
+<body>
+    <script>
+        // Crée un objet Personne
+        let personne = {
+            id: 1,
+            nom: "Dupont",
+            prenom: ["Jean", "Paul"],
+            dn: "1990-01-01",  // Date au format ISO
+            s: "M"
+        };
+
+        // Crée une connexion WebSocket
+        let ws = new WebSocket("ws://localhost:7500/etatCivil/ws/chatPersonne");
+
+        // Lorsque la connexion WebSocket est ouverte
+        ws.onopen = () => {
+            console.log("Connecté au serveur");
+            ws.send(JSON.stringify(personne));  // Envoi de l'objet Personne sous forme de JSON
+        };
+
+        // Lorsque le serveur envoie un message
+        ws.onmessage = (event) => {
+            console.log("Message du serveur : ", event.data);
+        };
+
+        // Lorsque la connexion WebSocket est fermée
+        ws.onclose = () => {
+            console.log("Connexion fermée");
+        };
+    </script>
+</body>
+</html>

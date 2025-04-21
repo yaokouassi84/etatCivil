@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Exemple - Personne</title>
+</head>
+<body>
+
+    <h2>Ajouter une Personne</h2>
+    
+    <form id="formPersonne">
+        <label for="id">ID :</label>
+        <input type="number" id="id" name="id" required><br><br>
+
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" required><br><br>
+
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" required><br><br>
+
+        <label for="dn">Date de Naissance :</label>
+        <input type="date" id="dn" name="dn" required><br><br>
+
+        <label for="s">Sexe :</label>
+        <select id="s" name="s">
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
+        </select><br><br>
+
+        <button type="submit">Envoyer</button>
+    </form>
+
+    <h3>Réponse du serveur :</h3>
+    <div id="response"></div>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:7500/etatCivil/ws/chatAddPersonne");
+
+        ws.onopen = () => {
+            console.log("Connecté au serveur");
+        };
+
+        ws.onmessage = (event) => {
+            document.getElementById("response").innerText = event.data;
+            console.log("Message du serveur : ", event.data);
+        };
+
+        ws.onclose = () => {
+            console.log("Connexion fermée");
+        };
+
+        // Gérer le formulaire pour envoyer les données de Personne
+        document.getElementById("formPersonne").onsubmit = function(event) {
+            event.preventDefault();  // Empêche le formulaire de soumettre normalement
+
+            // Récupérer les valeurs du formulaire
+            const id = document.getElementById("id").value;
+            const nom = document.getElementById("nom").value;
+            const prenom = document.getElementById("prenom").value.split(",");  // Séparer les prénoms par une virgule
+            const dn = document.getElementById("dn").value;
+            const s = document.getElementById("s").value;
+
+            // Créer un objet Personne
+            const personne = {
+                id: parseInt(id),
+                nom: nom,
+                prenom: prenom,
+                dn: dn,  // La date de naissance sera envoyée en format ISO
+                s: s
+            };
+
+            // Convertir en JSON et envoyer au serveur via WebSocket
+            ws.send(JSON.stringify(personne));
+        };
+    </script>
+</body>
+</html>

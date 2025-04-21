@@ -74,4 +74,24 @@
     <servlet-name>ImprimerPersonne</servlet-name>
     <url-pattern>/ImprimerPersonne</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ChatServlet</display-name>
+    <servlet-name>ChatServlet</servlet-name>
+    <servlet-class>etatCivil.accueil.webSocket.ChatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChatServlet</servlet-name>
+    <url-pattern>/send-message</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ChatServletPersonne</display-name>
+    <servlet-name>ChatServletPersonne</servlet-name>
+    <servlet-class>etatCivil.accueil.webSocket.ChatServletPersonne</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChatServletPersonne</servlet-name>
+    <url-pattern>/send-personne</url-pattern>
+  </servlet-mapping>
 </web-app>
